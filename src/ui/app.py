@@ -1,4 +1,4 @@
-
+from io import BytesIO
 import sys
 from pathlib import Path
 
@@ -302,6 +302,31 @@ if page == "Executive Overview":
             )
         else:
             st.info("No customer data is available for this date range.")
+        
+        # Top 5 Customers
+        st.subheader("Top 5 Customers by Revenue")
+
+        if not customers.empty:
+            customers_display = customers.rename(
+                columns={
+                    "customer_name": "Customer",
+                    "total_revenue": "Revenue (₹)",
+                }
+            )
+            st.dataframe(
+                customers_display,
+                use_container_width=True,
+                hide_index=True,
+            )
+        else:
+            st.info("No customer data is available for this date range.")
+
+        # PASTE THE COMPLETE REPORT DOWNLOAD CODE HERE
+
+        with st.expander("View underlying analytics data"):
+            st.write("Regional revenue")
+            # Keep the existing code below unchanged
+
 
         with st.expander("View underlying analytics data"):
             st.write("Regional revenue")
