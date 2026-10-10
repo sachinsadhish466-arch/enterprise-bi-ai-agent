@@ -1,6 +1,7 @@
 
 from pathlib import Path
 import sqlite3
+from datetime import date
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -89,6 +90,50 @@ def monthly_revenue():
     """
     return execute_query(query)
 
+def business_metrics_by_date(start_date: str, end_date: str):
+    """
+    Return business metrics for an inclusive date range.
+
+    Dates must use YYYY-MM-DD format.
+    """
+    try:
+        start = date.fromisoformat(start_date)
+        end = date.fromisoformat(end_date)
+    except (ValueError, TypeError):
+        raise ValueError(
+            "Dates must use the YYYY-MM-DD format."
+        ) from None
+
+    if start.isoformat() != start_date or end.isoformat() != end_date:
+        raise ValueError("Dates must use the YYYY-MM-DD format.")
+
+    if start > end:
+        raise ValueError("start_date cannot be after end_date.")
+
+    query = """
+    SELECT
+        COUNT(DISTINCT o.order_id) AS total_orders,
+        COUNT(DISTINCT o.customer_id) AS unique_customers,
+        COALESCE(
+            SUM(p.unit_price * o.quantity * (1 - o.discount)),
+            0
+        ) AS total_revenue,
+        COALESCE(
+            SUM(
+                (p.unit_price * (1 - o.discount) - p.unit_cost)
+                * o.quantity
+            ),
+            0
+        ) AS total_profit
+    FROM orders o
+    JOIN products p ON o.product_id = p.product_id
+    WHERE date(o.order_date) BETWEEN date(?) AND date(?);
+    """
+
+    return execute_query(
+        query,
+        (start.isoformat(), end.isoformat()),
+    )[0]
 
 if __name__ == "__main__":
     print("\nTOTAL BUSINESS METRICS")

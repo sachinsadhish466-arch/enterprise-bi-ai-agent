@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
 from google import genai
 from google.genai import types
@@ -20,6 +20,7 @@ from metrics import (
     revenue_by_product,
     top_customers,
     monthly_revenue,
+    business_metrics_by_date,
 )
 from document_search import retrieve_documents
 
@@ -28,7 +29,7 @@ load_dotenv(PROJECT_ROOT / ".env")
 app = FastAPI(
     title="Enterprise Business Intelligence AI",
     description="Business analytics and document-search API",
-    version="1.0.0",
+    version="1.1.0",
 )
 
 api_key = os.getenv("GEMINI_API_KEY")
@@ -90,6 +91,7 @@ CONFIG = types.GenerateContentConfig(
 
 @app.get("/")
 def home():
+    """Return API status and documentation location."""
     return {
         "message": "Enterprise Business Intelligence API is running",
         "docs": "/docs",
@@ -98,14 +100,39 @@ def home():
 
 @app.get("/health")
 def health():
+    """Check API status and Gemini configuration."""
     return {
         "status": "healthy",
         "gemini_configured": client is not None,
     }
 
 
+@app.get("/metrics/date-range")
+def get_metrics_by_date(
+    start_date: str = Query(
+        ...,
+        description="Start date in YYYY-MM-DD format",
+        examples=["2026-01-01"],
+    ),
+    end_date: str = Query(
+        ...,
+        description="End date in YYYY-MM-DD format",
+        examples=["2026-12-31"],
+    ),
+):
+    """Return order, customer, revenue, and profit metrics for a date range."""
+    try:
+        return business_metrics_by_date(start_date, end_date)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        ) from exc
+
+
 @app.post("/ask")
 def ask_business_question(request: QuestionRequest):
+    """Answer business questions using Gemini and available tools."""
     if client is None:
         raise HTTPException(
             status_code=503,
