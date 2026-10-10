@@ -1,0 +1,17 @@
+
+# Optional: distributed data processing
+pyspark
+sqlalchemy
+
+# Optional: local semantic retrieval
+faiss-cpu
+sentence-transformers
+
+# Optional: LangChain and LangGraph experiments
+langchain
+langchain-community
+langchain-openai
+langgraph
+
+# Optional: direct OpenAI API experiments
+openai

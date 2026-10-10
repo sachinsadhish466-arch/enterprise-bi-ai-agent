@@ -1,0 +1,21 @@
+
+# Gemini AI
+google-genai
+python-dotenv
+
+# Data analytics
+pandas
+numpy
+
+# API backend
+fastapi
+uvicorn
+
+# Dashboard
+streamlit
+plotly
+requests
+
+# Automated testing
+pytest
+httpx

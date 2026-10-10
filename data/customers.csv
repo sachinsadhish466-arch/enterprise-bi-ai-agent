@@ -1,0 +1,11 @@
+customer_id,customer_name,customer_type,city,region,industry
+C001,Arun Technologies,Enterprise,Chennai,South,Technology
+C002,Bharat Retail,SMB,Coimbatore,South,Retail
+C003,Global Finance Corp,Enterprise,Mumbai,West,Finance
+C004,Metro Healthcare,Enterprise,Delhi,North,Healthcare
+C005,Sunrise Manufacturing,SMB,Pune,West,Manufacturing
+C006,Green Energy Ltd,Enterprise,Bengaluru,South,Energy
+C007,Future Retail,SMB,Hyderabad,South,Retail
+C008,National Logistics,Enterprise,Ahmedabad,West,Logistics
+C009,Prime Education,SMB,Kolkata,East,Education
+C010,Smart Solutions,Enterprise,Jaipur,North,Technology

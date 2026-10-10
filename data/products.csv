@@ -1,0 +1,11 @@
+product_id,product_name,category,unit_cost,unit_price
+P001,Enterprise Laptop,Computers,55000,75000
+P002,Business Laptop,Computers,40000,58000
+P003,Office Monitor,Computers,12000,18000
+P004,Wireless Keyboard,Accessories,1200,2000
+P005,Wireless Mouse,Accessories,600,1200
+P006,Enterprise Server,Infrastructure,180000,250000
+P007,Network Router,Networking,18000,28000
+P008,Network Switch,Networking,25000,38000
+P009,Cloud Storage Package,Cloud Services,8000,15000
+P010,Security Software,Software,10000,22000
